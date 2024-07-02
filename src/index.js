@@ -65,3 +65,42 @@ searchformelement.addEventListener("submit", handlesubmit);
 
 //Show lisbon  by default
 searchCity("Lisbon");
+
+function displayforecast() {
+  // Select the element where the forecast will be displayed
+  let forecastelement = document.querySelector("#weather-forecast");
+
+  //Array of days to be displayed
+  let days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  //decalare and intialize empty string to hold the content
+  let forecasthtml = "";
+
+  // Loop through each day and create the HTML structure
+  days.forEach(function (day) {
+    forecasthtml += `   
+            <div class="weather-forecast-day">
+            <div class="weather-forecast-date">${day}</div>
+            <div class="weather-forecast-icon">🌤️</div>
+            <div class="weather-forecast-temperatures">
+              <div class="weather-forecast-temperature">
+                <strong>15º</strong>
+              </div>
+              <div class="weather-forecast-temperature">9º</div>
+            </div>
+          </div>`;
+  });
+
+  // Set the innerHTML of the forecast element to the generated HTML string
+  forecastelement.innerHTML = forecasthtml;
+}
+
+displayforecast();
