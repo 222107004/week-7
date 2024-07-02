@@ -27,6 +27,9 @@ function resfreshWeather(response) {
 
   let temperatureicon = document.querySelector("#weather-app-icon");
   temperatureicon.innerHTML = `<img src="${response.data.condition.icon_url}" alt="Weather Icon">`;
+
+  //Call as soon as i get the weather above 
+  getForecast(response.data.city);
 }
 
 function formatDate(date) {
@@ -63,10 +66,8 @@ function searchCity(city) {
 let searchformelement = document.querySelector("#search-form");
 searchformelement.addEventListener("submit", handlesubmit);
 
-//Show lisbon  by default
-searchCity("Lisbon");
-
-function displayforecast() {
+function displayforecast(response) {
+  console.log(response.data);
   // Select the element where the forecast will be displayed
   let forecastelement = document.querySelector("#weather-forecast");
 
@@ -103,4 +104,14 @@ function displayforecast() {
   forecastelement.innerHTML = forecasthtml;
 }
 
-displayforecast();
+//A function to get the forecasrt for a city
+function getForecast(city) {
+  let apiKey = "1133ddbaebf743fc32d57eobt926aab0";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+  axios(apiUrl).then(displayforecast);
+  console.log(apiUrl);
+}
+
+//Show lisbon  by default
+searchCity("Lisbon");
+getForecast("Paris");
