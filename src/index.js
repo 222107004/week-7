@@ -28,17 +28,16 @@ function resfreshWeather(response) {
   let temperatureicon = document.querySelector("#weather-app-icon");
   temperatureicon.innerHTML = `<img src="${response.data.condition.icon_url}" alt="Weather Icon">`;
 
-  //Call as soon as i get the weather above 
+  //Call as soon as i get the weather above
   getForecast(response.data.city);
 }
 
-function formatDate(date) {
-  let minutes = date.getMinutes();
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
+// Function to format a Unix timestamp into the day of the week
+function formatDate(timestamp) {
+  // Create a new Date object using the provided timestamp (in seconds)
+  let date = new Date(timestamp * 1000);
 
-  let hours = date.getHours();
+  // Array containing names of days of the week, starting from Sunday (index 0)
   let days = [
     "Sunday",
     "Monday",
@@ -49,8 +48,8 @@ function formatDate(date) {
     "Saturday",
   ];
 
-  let day = days[date.getDay()];
-  return `${day} ${date.getHours()}:${date.getMinutes()}`;
+  // Return the name of the day based on the day of the week (0-6) from the Date object
+  return days[date.getDay()];
 }
 
 //Function to serach for acity
@@ -71,33 +70,28 @@ function displayforecast(response) {
   // Select the element where the forecast will be displayed
   let forecastelement = document.querySelector("#weather-forecast");
 
-  //Array of days to be displayed
-  let days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-
   //decalare and intialize empty string to hold the content
   let forecasthtml = "";
 
   // Loop through each day and create the HTML structure
-  days.forEach(function (day) {
-    forecasthtml += `   
+  response.data.daily.forEach(function (day, index) {
+    if (index < 5) {
+      forecasthtml += `   
             <div class="weather-forecast-day">
-            <div class="weather-forecast-date">${day}</div>
-            <div class="weather-forecast-icon">🌤️</div>
+            <div class="weather-forecast-date">${formatDate(day.time)}</div>
+            <img src="${
+              day.condition.icon_url
+            }" class="weather-forecast-icon" </>
             <div class="weather-forecast-temperatures">
               <div class="weather-forecast-temperature">
-                <strong>15º</strong>
+                <strong>${Math.round(day.temperature.minimum)}º</strong>
               </div>
-              <div class="weather-forecast-temperature">9º</div>
+              <div class="weather-forecast-temperature">${Math.round(
+                day.temperature.maximum
+              )}º</div>
             </div>
           </div>`;
+    }
   });
 
   // Set the innerHTML of the forecast element to the generated HTML string
