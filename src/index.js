@@ -25,7 +25,8 @@ function resfreshWeather(response) {
   let date = new Date(response.data.time * 1000);
   timelement.innerHTML = formatDate(date);
 
-  console.log(response.data);
+  let temperatureicon = document.querySelector("#weather-app-icon");
+  temperatureicon.innerHTML = `<img src="${response.data.condition.icon_url}" alt="Weather Icon">`;
 }
 
 function formatDate(date) {
